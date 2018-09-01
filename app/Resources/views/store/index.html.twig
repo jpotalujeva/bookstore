@@ -1,21 +1,64 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+{% endblock %}
 
 {% block body %}
     {% if user != null %}
-        <p>{{ dump(user) }}</p>
-        <a  href="{{ path('insert')}}">Add book</a>
-    {% endif %}
-   <a  href="{{ path('login')}}">LOGIN</a>
-    <div class="jumbotron">Welcome:)</div>
-    {% for b in books %}
-        <div class="panel panel-primary">
-            <div class="panel-heading">{{ b.id }}</div>
-            <div class="panel-body">
-                <p>Name:  {{ b.name }}</p>
-                <p>Author:  {{ b.author }}</p>
-                <p>Pages:  {{ b.pages }}</p>
-                <a href={{ path('edit', {'id': b.id}) }}>Edit Book</a>
-            </div>
+        <div class="page-header">
+            <p>Hello {{ user.username }}</p>
+            <ul class="nav nav-pills">
+                <li role="presentation"><a href="{{ path('insert')}}">Add Book</a></li>
+            </ul>
         </div>
-    {% endfor %}
+    {% endif %}
+    <ul class="nav nav-pills">
+        <li role="presentation"> <a  href="{{ path('login')}}">LOGIN</a></li>
+    </ul>
+    <div class="row">
+        {% for b in books %}
+            <div class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">{{ b.id }}</div>
+                    <div class="panel-body">
+                        <p>Name:  {{ b.name }}</p>
+                        <p>Author:  {{ b.author }}</p>
+                        <p>Pages:  {{ b.pages }}</p>
+                        <a href={{ path('edit', {'id': b.id}) }}>Edit Book</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+     </div>
+    {% if maxPages > 1 %}
+    <ul class="pagination">
+        {%if thisPage > 1 %}
+            <li >
+                <a href="{{ path('home', {currentPage: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+            </li>
+        {% endif %}
+
+        {# Render each page number #}
+        {% for i in 1..maxPages %}
+            <li>
+                <a href="{{ path('home', {currentPage: i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {# `»` arrow #}
+        {%if thisPage < maxPages %}
+            <li>
+                <a href="{{ path('home', {currentPage: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+            </li>
+        {% endif %}
+        </li>
+    </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 {% endblock %}

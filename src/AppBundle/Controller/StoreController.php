@@ -6,19 +6,23 @@ use AppBundle\Entity\Book;
 use AppBundle\Form\BookType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class StoreController extends Controller
 {
     /**
-     * @Route("/home", name="home")
+     * @Route("/home/{currentPage}",  defaults={"currentPage"="1    "},name="home")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $currentPage)
     {
         $user = $this->getUser();
-        $em = $this->container->get('doctrine')->getEntityManager();
-        $books =  $em->getRepository(Book::class)->findAll();
+        $currentPage = $request->attributes->get('_route_params');
+        $em = $this->getDoctrine()->getManager();
+        $books =  $em->getRepository(Book::class)->findAllCustom($currentPage['currentPage'], 5);
         return $this->render('store/index.html.twig', [
+            'maxPages' => ceil(count($books)/5),
+            'thisPage' => $currentPage['currentPage'],
             'books' => $books,
             'user' => $user
         ]);
@@ -42,7 +46,12 @@ class StoreController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $name = $entity->getName();
             $em = $this->getDoctrine()->getManager();
+            if ($em->getRepository(Book::class)->getByName($name)) {
+                return $this->render('exception.html.twig', ['error' =>'Book with this name already exists!']);
+            }
+            $entity->setDateCreated(new \DateTime());
             $em->persist($entity);
             $em->flush();
 
@@ -82,5 +91,27 @@ class StoreController extends Controller
             'form' => $form->createView(),
             'entity' => $entity
         ]);
+    }
+
+    public function showAllAction($currentPage)
+    {
+        $limit = 5;
+        $em = $this->getDoctrine()->getManager();
+        $books = $em->getRepository(Book::class)->findAllCustom($currentPage, $limit);
+
+
+        $maxPages = ceil($books->count()/$limit);
+        $thisPage = $currentPage;
+
+
+        if (!$books) {
+            throw $this->createNotFoundException('Unable to find Books.');
+        }
+
+        return $this->render('store/index.html.twig', [
+            'books' => $books,
+            'maxPages'=>$maxPages,
+            'thisPage' => $thisPage,
+        ] );
     }
 }

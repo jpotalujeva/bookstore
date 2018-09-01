@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * BookRepository
@@ -10,4 +11,35 @@ namespace AppBundle\Repository;
  */
 class BookRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getByName($name)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT p FROM AppBundle:Book p WHERE p.name = '{$name}'"
+            )->getResult();
+    }
+
+    public function findAllCustom($currentPage, $limit)
+    {
+         $query = $this->getEntityManager()
+            ->createQuery(
+                "SELECT p FROM AppBundle:Book p"
+            );
+
+        $paginator = $this->paginate($query, $currentPage, $limit);
+
+        return $paginator;
+    }
+
+    public function paginate($dql, $page, $limit)
+    {
+        $paginator = new Paginator($dql);
+        $paginator->setUseOutputWalkers(false);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
+    }
 }
