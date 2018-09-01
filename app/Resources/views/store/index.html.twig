@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if user != null %}
+        <p>{{ dump(user) }}</p>
+        <a  href="{{ path('insert')}}">Add book</a>
+    {% endif %}
+   <a  href="{{ path('login')}}">LOGIN</a>
+    <div class="jumbotron">Welcome:)</div>
+    {% for b in books %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">{{ b.id }}</div>
+            <div class="panel-body">
+                <p>Name:  {{ b.name }}</p>
+                <p>Author:  {{ b.author }}</p>
+                <p>Pages:  {{ b.pages }}</p>
+                <a href={{ path('edit', {'id': b.id}) }}>Edit Book</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
