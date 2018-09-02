@@ -8,6 +8,7 @@ To get application running follow these steps:
 At this point you will be asked to provide database connection credentials.
 3) run `php bin/console doctrine:schema:create` to get all necessary tables in database you work with
 4) go to `{domain}/home` page where application will be up and running;
+5) for running unit tests run `phpunit test/AppBundle/Controller/ApiControllerTest.php`
 
 Application schema
 =================

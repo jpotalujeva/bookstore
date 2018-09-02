@@ -6,13 +6,12 @@ use AppBundle\Entity\Book;
 use AppBundle\Form\BookType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class StoreController extends Controller
 {
     /**
-     * @Route("/home/{currentPage}",  defaults={"currentPage"="1    "},name="home")
+     * @Route("/home/{currentPage}",  defaults={"currentPage"=1},name="home")
      */
     public function indexAction(Request $request, $currentPage)
     {

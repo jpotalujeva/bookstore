@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class ApiController extends Controller
 {
@@ -24,5 +25,47 @@ class ApiController extends Controller
         $json = $serializer->normalize($books, 'json');
 
         return new JsonResponse($json, 200);
+    }
+
+    /**
+     * Can be tested with Postman app
+     * Example of request string
+     * http://domain/api/books/create?
+     * params={
+     *     "book":{
+     *         "name":"Minds of Billy Milligan",
+     *         "author":"Daniel Keyes",
+     *         "pages":300,
+     *         "price":14.10
+     *     }
+     * }
+     *
+     * @Route("/api/books/create", name="addBook")
+     */
+    public function addBooksAction(Request $request)
+    {
+        $params = $request->request->all();
+        $params = (array) json_decode($params['params']);
+
+        if (!$params['book']) {
+          throw new \Exception('Book data is not provided!');
+        }
+        $book = (array) $params['book'];
+
+        $entity = new Book();
+        $entity->setName($book['name']);
+        $entity->setAuthor($book['author']);
+        $entity->setPages($book['pages']);
+        $entity->setPrice($book['price']);
+        $entity->setDateCreated(new \DateTime());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+
+        $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
+        $json = $serializer->normalize($entity, 'json');
+
+        return new JsonResponse($json, 201);
     }
 }

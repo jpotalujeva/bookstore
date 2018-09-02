@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * Book
@@ -50,7 +51,7 @@ class Book
     private $price;
 
     /**
-     * @var string
+     * @var DateTime
      *
      * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
      */
@@ -164,7 +165,7 @@ class Book
     }
 
     /**
-     * @param string $dateCreated
+     * @param DateTime $dateCreated
      */
     public function setDateCreated($dateCreated)
     {
