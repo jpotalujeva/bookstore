@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Book;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,8 @@ class BookType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('author', TextType::class)
-            ->add('pages', NumberType::class);
+            ->add('pages', NumberType::class)
+            ->add('price', NumberType::class,['scale' => 4]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -18,6 +18,10 @@ class StoreController extends Controller
     {
         $user = $this->getUser();
         $currentPage = $request->attributes->get('_route_params');
+        if ($currentPage == null)
+        {
+            $currentPage = 1;
+        }
         $em = $this->getDoctrine()->getManager();
         $books =  $em->getRepository(Book::class)->findAllCustom($currentPage['currentPage'], 5);
         return $this->render('store/index.html.twig', [
@@ -78,7 +82,8 @@ class StoreController extends Controller
         $form = $this->createForm(BookType::class, $entity);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+
+        if ($form->isSubmitted  () && $form->isValid()) {
             $manager->merge($entity);
             $manager->flush();
 

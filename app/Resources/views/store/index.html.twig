@@ -26,6 +26,7 @@
                         <p>Name:  {{ b.name }}</p>
                         <p>Author:  {{ b.author }}</p>
                         <p>Pages:  {{ b.pages }}</p>
+                        <p>Price:  {{ b.price }}</p>
                         <a href={{ path('edit', {'id': b.id}) }}>Edit Book</a>
                     </div>
                 </div>
@@ -36,21 +37,27 @@
     <ul class="pagination">
         {%if thisPage > 1 %}
             <li >
-                <a href="{{ path('home', {currentPage: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                <a href="{{ path('home', {currentPage: thisPage|number_format -1 < 1 ? 1 :  thisPage|number_format-1}) }}">«</a>
             </li>
         {% endif %}
 
+        {%if thisPage > 1 %}
         {# Render each page number #}
         {% for i in 1..maxPages %}
+            {% if i == thisPage|number_format %}
+                <li class="active"><a href="{{ path('home', {currentPage: i}) }}">{{ i }}</a></li>
+           {% else %}
             <li>
                 <a href="{{ path('home', {currentPage: i}) }}">{{ i }}</a>
             </li>
+            {% endif %}
         {% endfor %}
+        {% endif %}
 
         {# `»` arrow #}
         {%if thisPage < maxPages %}
             <li>
-                <a href="{{ path('home', {currentPage: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                <a href="{{ path('home', {currentPage:  thisPage|number_format+1 <= maxPages ?  thisPage|number_format+1 :  thisPage|number_format}) }}">»</a>
             </li>
         {% endif %}
         </li>

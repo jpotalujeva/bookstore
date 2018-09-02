@@ -43,6 +43,13 @@ class Book
     private $pages;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
+     */
+    private $price;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
@@ -130,6 +137,22 @@ class Book
     public function getPages()
     {
         return $this->pages;
+    }
+
+    /**
+     * @param float $price
+     */
+    public function setPrice(float $price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 
     /**

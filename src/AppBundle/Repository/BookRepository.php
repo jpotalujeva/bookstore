@@ -26,9 +26,17 @@ class BookRepository extends \Doctrine\ORM\EntityRepository
                 "SELECT p FROM AppBundle:Book p"
             );
 
-        $paginator = $this->paginate($query, $currentPage, $limit);
+        $paginator = $this->paginate($query, (int) $currentPage, $limit);
 
         return $paginator;
+    }
+
+    public function findAllNamesAndPrices()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                "SELECT p.name, p.price FROM AppBundle:Book p"
+            )->getResult();
     }
 
     public function paginate($dql, $page, $limit)
