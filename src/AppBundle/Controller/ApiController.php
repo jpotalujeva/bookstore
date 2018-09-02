@@ -1,7 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Book;
+use AppBundle\Entity\Product;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -19,7 +19,7 @@ class ApiController extends Controller
     public function getBooksAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $books = $em->getRepository(Book::class)->findAllNamesAndPrices();
+        $books = $em->getRepository(Product::class)->findAllNamesAndPrices();
 
         $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
         $json = $serializer->normalize($books, 'json');
@@ -44,7 +44,7 @@ class ApiController extends Controller
      */
     public function addBooksAction(Request $request)
     {
-        $params = $request->request->all();
+        $params = $request->query->all();
         $params = (array) json_decode($params['params']);
 
         if (!$params['book']) {
@@ -52,10 +52,8 @@ class ApiController extends Controller
         }
         $book = (array) $params['book'];
 
-        $entity = new Book();
+        $entity = new Product();
         $entity->setName($book['name']);
-        $entity->setAuthor($book['author']);
-        $entity->setPages($book['pages']);
         $entity->setPrice($book['price']);
         $entity->setDateCreated(new \DateTime());
 

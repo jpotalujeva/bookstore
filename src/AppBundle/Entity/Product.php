@@ -8,10 +8,10 @@ use DateTime;
 /**
  * Book
  *
- * @ORM\Table(name="book")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BookRepository")
+ * @ORM\Table(name="product")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
  */
-class Book
+class Product
 {
     /**
      * @var int
@@ -28,20 +28,6 @@ class Book
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="author", type="string", length=255, nullable=true)
-     */
-    private $author;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="pages", type="integer", nullable=true)
-     */
-    private $pages;
 
     /**
      * @var float
@@ -90,54 +76,6 @@ class Book
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set author
-     *
-     * @param string $author
-     *
-     * @return Book
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    /**
-     * Get author
-     *
-     * @return string
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * Set pages
-     *
-     * @param integer $pages
-     *
-     * @return Book
-     */
-    public function setPages($pages)
-    {
-        $this->pages = $pages;
-
-        return $this;
-    }
-
-    /**
-     * Get pages
-     *
-     * @return int
-     */
-    public function getPages()
-    {
-        return $this->pages;
     }
 
     /**
