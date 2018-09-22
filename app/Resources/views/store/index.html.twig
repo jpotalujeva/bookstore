@@ -11,12 +11,14 @@
             <p>Hello {{ user.username }}</p>
             <ul class="nav nav-pills">
                 <li role="presentation"><a href="{{ path('insert')}}">Add Book</a></li>
+                <li role="presentation"><a href="{{ path('fos_user_security_logout')}}">Log out</a></li>
             </ul>
         </div>
-    {% endif %}
+    {% else %}
     <ul class="nav nav-pills">
         <li role="presentation"> <a  href="{{ path('login')}}">LOGIN</a></li>
     </ul>
+    {% endif %}
     <div class="row">
         {% for b in books %}
             <div class="col-md-4">
@@ -27,7 +29,10 @@
                         <p>Author:  {{ b.author }}</p>
                         <p>Pages:  {{ b.pages }}</p>
                         <p>Price:  {{ b.price }}</p>
-                        <a href={{ path('edit', {'id': b.id}) }}>Edit Book</a>
+                        <p>Date:  {{ b.dateCreated|date('Y-m-d') }}</p>
+                        {%  if user != null %}
+                            <a href={{ path('edit', {'id': b.id}) }}>Edit Book</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

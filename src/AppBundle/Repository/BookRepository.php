@@ -23,7 +23,7 @@ class BookRepository extends \Doctrine\ORM\EntityRepository
     {
          $query = $this->getEntityManager()
             ->createQuery(
-                "SELECT p FROM AppBundle:Book p"
+                "SELECT p FROM AppBundle:Book p ORDER BY p.dateCreated"
             );
 
         $paginator = $this->paginate($query, (int) $currentPage, $limit);

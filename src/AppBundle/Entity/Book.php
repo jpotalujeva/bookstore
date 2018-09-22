@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 
 /**
@@ -24,28 +25,28 @@ class Book
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @var string|null
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="author", type="string", length=255, nullable=true)
      */
     private $author;
 
     /**
      * @var int
-     *
+     * @Assert\Type("integer")
      * @ORM\Column(name="pages", type="integer", nullable=true)
      */
     private $pages;
 
     /**
      * @var float
-     *
+     * @Assert\Type("double")
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
      */
     private $price;

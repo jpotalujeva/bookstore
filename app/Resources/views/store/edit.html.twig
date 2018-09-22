@@ -1,12 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <ul class="nav nav-pills">
+        <li role="presentation"><a href="{{ path('home')}}">Back</a></li>
+    </ul>
     {{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.author) }}
-    {{ form_row(form.pages) }}
-    {{ form_row(form.price) }}
-
+    <div class="col-md-4">
+        <div class="">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.author) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.pages) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.price) }}
+        </div>
+    </div>
     <button type="submit">Save!</button>
     {{ form_end(form) }}
 {% endblock %}

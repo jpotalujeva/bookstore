@@ -10,10 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class StoreController extends Controller
 {
+    const LIMIT = 50;
     /**
      * @Route("/home/{currentPage}",  defaults={"currentPage"=1},name="home")
      */
-    public function indexAction(Request $request, $currentPage)
+    public function indexAction(Request $request, $currentPage = 1)
     {
         $user = $this->getUser();
         $currentPage = $request->attributes->get('_route_params');
@@ -22,9 +23,9 @@ class StoreController extends Controller
             $currentPage = 1;
         }
         $em = $this->getDoctrine()->getManager();
-        $books =  $em->getRepository(Book::class)->findAllCustom($currentPage['currentPage'], 5);
+        $books =  $em->getRepository(Book::class)->findAllCustom($currentPage, 50);
         return $this->render('store/index.html.twig', [
-            'maxPages' => ceil(count($books)/5),
+            'maxPages' => ceil(count($books)/50),
             'thisPage' => $currentPage['currentPage'],
             'books' => $books,
             'user' => $user
@@ -99,9 +100,8 @@ class StoreController extends Controller
 
     public function showAllAction($currentPage)
     {
-        $limit = 5;
         $em = $this->getDoctrine()->getManager();
-        $books = $em->getRepository(Book::class)->findAllCustom($currentPage, $limit);
+        $books = $em->getRepository(Book::class)->findAllCustom($currentPage, self::LIMIT);
 
 
         $maxPages = ceil($books->count()/$limit);

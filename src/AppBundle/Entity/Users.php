@@ -3,32 +3,22 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UsersRepository")
  */
-class Users implements UserInterface
+class Users extends BaseUser implements UserInterface
 {
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
-    /**
-     * @ORM\Column(type="string", name="username", length=25, unique=true)
-     */
-    private $username;
-
-    /**
-     * @ORM\Column(type="string", name="password", length=64)
-     */
-    private $password;
-
-    private $plainPassword;
-
+    protected $plainPassword;
 
     /**
      * @param mixed $username
