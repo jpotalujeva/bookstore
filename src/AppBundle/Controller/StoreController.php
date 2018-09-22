@@ -17,7 +17,6 @@ class StoreController extends Controller
     public function indexAction(Request $request, $currentPage = 1)
     {
         $user = $this->getUser();
-        $currentPage = $request->attributes->get('_route_params');
         if ($currentPage == null)
         {
             $currentPage = 1;
@@ -83,7 +82,7 @@ class StoreController extends Controller
         $form->handleRequest($request);
 
 
-        if ($form->isSubmitted  () && $form->isValid()) {
+        if ($form->isSubmitted () && $form->isValid()) {
             $manager->merge($entity);
             $manager->flush();
 
@@ -91,7 +90,6 @@ class StoreController extends Controller
 
             return $this->redirect($this->generateUrl('home'));
         }
-
         return $this->render('store/edit.html.twig', [
             'form' => $form->createView(),
             'entity' => $entity
@@ -103,15 +101,12 @@ class StoreController extends Controller
         $em = $this->getDoctrine()->getManager();
         $books = $em->getRepository(Book::class)->findAllCustom($currentPage, self::LIMIT);
 
-
-        $maxPages = ceil($books->count()/$limit);
+        $maxPages = ceil($books->count()/self::LIMIT);
         $thisPage = $currentPage;
-
 
         if (!$books) {
             throw $this->createNotFoundException('Unable to find Books.');
         }
-
         return $this->render('store/index.html.twig', [
             'books' => $books,
             'maxPages'=>$maxPages,

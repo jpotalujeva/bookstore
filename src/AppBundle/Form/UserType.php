@@ -1,6 +1,5 @@
 <?php
 
-// src/Form/UserType.php
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Users;

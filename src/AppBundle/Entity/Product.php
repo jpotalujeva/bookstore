@@ -43,7 +43,6 @@ class Product
      */
     private $dateCreated;
 
-
     /**
      * Get id
      *
@@ -59,13 +58,10 @@ class Product
      *
      * @param string $name
      *
-     * @return Book
      */
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
