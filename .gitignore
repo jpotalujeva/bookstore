@@ -16,3 +16,4 @@
 /web/bundles/
 .idea/
 var/
+/docker-compose.yml
